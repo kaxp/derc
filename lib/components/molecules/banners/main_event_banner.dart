@@ -30,13 +30,9 @@ class MainEventBanner extends StatelessWidget {
           width: double.infinity,
           height: 260,
           fit: BoxFit.cover,
-          errorWidget: (context, image, _) => const Image(
-            image: AssetImage(
-              AppImages.errorPlaceholder,
-            ),
-            width: double.infinity,
+          errorWidget: (context, image, _) => AppImages.icErrorPlaceholder(
             height: 260,
-            fit: BoxFit.cover,
+            widget: double.infinity,
           ),
         ),
       ),

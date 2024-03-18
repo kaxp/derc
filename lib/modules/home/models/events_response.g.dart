@@ -40,22 +40,10 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
 
 Performer _$PerformerFromJson(Map<String, dynamic> json) => Performer(
       image: json['image'] as String?,
-      id: json['id'] as int,
-      images: Images.fromJson(json['images'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PerformerToJson(Performer instance) => <String, dynamic>{
       'image': instance.image,
-      'id': instance.id,
-      'images': instance.images,
-    };
-
-Images _$ImagesFromJson(Map<String, dynamic> json) => Images(
-      huge: json['huge'] as String,
-    );
-
-Map<String, dynamic> _$ImagesToJson(Images instance) => <String, dynamic>{
-      'huge': instance.huge,
     };
 
 Venue _$VenueFromJson(Map<String, dynamic> json) => Venue(

@@ -9,9 +9,11 @@ class SearchResultListView extends StatelessWidget {
   const SearchResultListView({
     super.key,
     required this.events,
+    required this.onTap,
   });
 
   final List<Event> events;
+  final Function(Event) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class SearchResultListView extends StatelessWidget {
         final dateTime = events[index].datetimeLocal;
 
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            onTap(events[index]);
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: kSpacingXSmall,

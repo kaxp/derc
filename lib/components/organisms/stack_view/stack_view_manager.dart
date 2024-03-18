@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:kapil_sahu_cred/components/atoms/buttons/default_elevated_button.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
+import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
+import 'package:kapil_sahu_cred/modules/home/pages/search_page.dart';
 
 class StackViewManager extends StatefulWidget {
   const StackViewManager({
-    required this.numberOfStacks,
+    required this.totalStackCount,
+    required this.currentStackIndex,
+    required this.stackItems,
     required this.onStackDismissed,
-  });
+    required this.onStackChange,
+  }) : assert(
+          totalStackCount >= 2 && totalStackCount <= 4,
+          'Number of stacks must be between 2 and 4.',
+        );
 
-  final int numberOfStacks;
+  final int totalStackCount;
+  final int currentStackIndex;
+  final Map<int, StackViewModel> stackItems;
   final VoidCallback onStackDismissed;
+  final Function(int) onStackChange;
+
   @override
   _StackViewManagerState createState() => _StackViewManagerState();
 }
 
 class _StackViewManagerState extends State<StackViewManager> {
-  int visibleStackIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,10 +41,6 @@ class _StackViewManagerState extends State<StackViewManager> {
                 color: AppColors.white,
               ),
             ),
-            const Text(
-              "Title",
-              style: TextStyle(color: AppColors.white),
-            ),
             IconButton(
               onPressed: () {},
               icon: const Icon(
@@ -45,34 +52,28 @@ class _StackViewManagerState extends State<StackViewManager> {
         ),
         Expanded(
           child: Stack(
-            children: List.generate(widget.numberOfStacks, (index) {
-              final heightFactor =
-                  0.75 - (0.1 * index); // Adjusted height factors
-              final isVisible = index <= visibleStackIndex;
+            children: List.generate(widget.totalStackCount, (index) {
+              final heightFactor = 0.82 - (0.1 * index);
+              final isVisible = index <= widget.currentStackIndex;
+
               return StackViewItem(
-                title: 'Stack ${index + 1}',
                 color: index == 0
-                    ? Colors.blue
+                    ? const Color(0xff40465a)
                     : index == 1
-                        ? Colors.green
+                        ? const Color(0xff3a4051)
                         : index == 2
-                            ? Colors.red
-                            : Colors.orange,
+                            ? const Color(0xff344048)
+                            : const Color(0xff2e3943),
                 isVisible: isVisible,
                 heightFactor: heightFactor,
-                onPressed: () {
-                  setState(() {
-                    visibleStackIndex = index;
-                  });
-                },
-                onNextPressed: () {
-                  if (index < widget.numberOfStacks - 1) {
-                    setState(() {
-                      visibleStackIndex = index + 1;
-                    });
+                onStackChange: () {
+                  if (widget.currentStackIndex != index) {
+                    widget.onStackChange(index);
                   }
                 },
                 stackNumber: index + 1,
+                stackItem: widget.stackItems[index],
+                isStackFocused: index == widget.currentStackIndex,
               );
             }),
           ),
@@ -84,22 +85,22 @@ class _StackViewManagerState extends State<StackViewManager> {
 
 class StackViewItem extends StatelessWidget {
   const StackViewItem({
-    required this.title,
     required this.color,
     required this.isVisible,
     required this.heightFactor,
-    required this.onPressed,
-    required this.onNextPressed,
+    required this.onStackChange,
     required this.stackNumber,
+    required this.stackItem,
+    required this.isStackFocused,
   });
 
-  final String title;
   final Color color;
   final bool isVisible;
   final double heightFactor;
-  final VoidCallback onPressed;
-  final VoidCallback onNextPressed;
+  final VoidCallback onStackChange;
   final int stackNumber;
+  final StackViewModel? stackItem;
+  final bool isStackFocused;
 
   @override
   Widget build(BuildContext context) {
@@ -110,26 +111,29 @@ class StackViewItem extends StatelessWidget {
       right: 0,
       bottom: isVisible ? 0 : -MediaQuery.of(context).size.height,
       child: GestureDetector(
-        onTap: onPressed,
+        onTap: onStackChange,
         child: Container(
           height: MediaQuery.of(context).size.height * heightFactor,
+          padding: const EdgeInsets.all(kSpacingMedium),
           color: color,
           alignment: Alignment.center,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Stack: $stackNumber',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+              Visibility(
+                visible: !isStackFocused,
+                child: stackItem?.secondaryChild ?? const SizedBox.shrink(),
+              ),
+              Expanded(
+                child: Center(
+                    child: stackItem?.primaryChild ?? const SizedBox.shrink()),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: onNextPressed,
-                child: const Text('Open Next Stack'),
+              Container(
+                child: DefaultElevatedButton(
+                  title: stackItem?.buttonTitle ?? '',
+                  onPressed: () => stackItem?.onButtonTap(),
+                ),
               ),
             ],
           ),

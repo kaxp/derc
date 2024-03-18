@@ -37,13 +37,9 @@ class EventListCell extends StatelessWidget {
               width: 54,
               fit: BoxFit.cover,
               imageUrl: imageUrl.toString(),
-              errorWidget: (context, image, _) => const Image(
+              errorWidget: (context, image, _) => AppImages.icErrorPlaceholder(
                 height: 54,
-                width: 54,
-                fit: BoxFit.cover,
-                image: AssetImage(
-                  AppImages.errorPlaceholder,
-                ),
+                widget: 54,
               ),
             ),
           ),

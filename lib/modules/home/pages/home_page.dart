@@ -3,19 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kapil_sahu_cred/components/atoms/buttons/default_elevated_button.dart';
 import 'package:kapil_sahu_cred/components/molecules/app_bar/custom_appbar.dart';
 import 'package:kapil_sahu_cred/components/molecules/loading_overlay/loading_overlay.dart';
-import 'package:kapil_sahu_cred/components/molecules/search_input_box/custom_search_input_box.dart';
 import 'package:kapil_sahu_cred/components/molecules/snackbar/custom_snackbar.dart';
 import 'package:kapil_sahu_cred/components/organisms/list_views/search_result_list_view.dart';
-import 'package:kapil_sahu_cred/components/organisms/stack_view/stack_view_manager.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
-import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_empty_view.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_initial_view.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_paging_loading_view.dart';
+import 'package:kapil_sahu_cred/modules/home/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,25 +23,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _searchFocus = FocusNode();
   final _homeBloc = Modular.get<HomeBloc>();
   final ScrollController _scrollController = ScrollController();
-  late final TextEditingController _searchInputController =
-      TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _homeBloc.fetchEvents('');
-    // _searchFocus.requestFocus();
     _scrollController.addListener(_onEventListScrolledListener);
   }
 
   @override
   void dispose() {
-    _searchFocus.dispose();
     _scrollController.dispose();
-    _searchInputController.dispose();
+
     super.dispose();
   }
 
@@ -51,21 +44,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        leadingWidget: const Center(
-          child: Image(
-            width: kSpacingXLarge,
+        leadingWidget: Center(
+          child: AppImages.icAppLogo(
             height: kSpacingXLarge,
-            image: AssetImage(
-              AppImages.appLogo,
-            ),
+            widget: kSpacingXLarge,
           ),
-        ),
-        titleWidget: CustomSearchInputBox(
-          hintText: AppStrings.searchEvents,
-          onSubmitted: _homeBloc.fetchEvents,
-          focusNode: _searchFocus,
-          controller: _searchInputController,
-          showSuffixIcon: true,
         ),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
@@ -79,27 +62,10 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           } else if (state is HomeSearchEnabled) {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              isDismissible: false,
-              enableDrag: false,
-              useRootNavigator: false,
-              elevation: 0,
-              backgroundColor: Colors.transparent,
+            SearchPage().showSearchView(
               context: context,
-              builder: (ctx) => FractionallySizedBox(
-                heightFactor: 0.8,
-                child: PopScope(
-                  canPop: false,
-                  child: StackViewManager(
-                    numberOfStacks: 4,
-                    onStackDismissed: () {
-                      Navigator.pop(context);
-                      _homeBloc.onStackDismissed();
-                    },
-                  ),
-                ),
-              ),
+              onStackDismissed: _homeBloc.onStackDismissed,
+              totalStackCount: 4,
             );
           }
         },
@@ -120,6 +86,14 @@ class _HomePageState extends State<HomePage> {
                 state.events.isNotEmpty
                     ? SearchResultListView(
                         events: state.events,
+                        onTap: (event) {
+                          SearchPage().showSearchView(
+                            context: context,
+                            onStackDismissed: _homeBloc.onStackDismissed,
+                            totalStackCount: 2,
+                            selectedEvent: event,
+                          );
+                        },
                       )
                     : const HomeInitialView(),
 

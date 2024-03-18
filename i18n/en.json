@@ -5,7 +5,7 @@
   "invalidClientIdError": "Client Id is invalid, please check and try again",
   "unknownError": "Sorry, something went wrong",
   "searchEvents": "Search events...",
-  "searchForEvents": "Search for the latest events, shows, concerts and much more!!!",
+  "noDataFound": "No Data found!\nPlease make sure the Internet is working.",
   "noResultFound": "Sorry, no matching result found!\nPlease try searching with a different input.",
   "bookNow": "Book Now",
   "comingSoon": "Coming Soon",

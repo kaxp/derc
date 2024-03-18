@@ -8,7 +8,7 @@ class AppStrings {
   static String invalidClientIdError = 'invalidClientIdError'.tr();
   static String unknownError = 'unknownError'.tr();
   static String searchEvents = 'searchEvents'.tr();
-  static String searchForEvents = 'searchForEvents'.tr();
+  static String noDataFound = 'noDataFound'.tr();
   static String noResultFound = 'noResultFound'.tr();
   static String bookNow = 'bookNow'.tr();
   static String comingSoon = 'comingSoon'.tr();

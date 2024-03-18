@@ -53,13 +53,9 @@ class Event extends Equatable {
 class Performer extends Equatable {
   const Performer({
     required this.image,
-    required this.id,
-    required this.images,
   });
 
   final String? image;
-  final int id;
-  final Images images;
 
   factory Performer.fromJson(Map<String, dynamic> json) =>
       _$PerformerFromJson(json);
@@ -67,23 +63,7 @@ class Performer extends Equatable {
   Map<String, dynamic> toJson() => _$PerformerToJson(this);
 
   @override
-  List<Object?> get props => [image, id, images];
-}
-
-@JsonSerializable()
-class Images extends Equatable {
-  const Images({
-    required this.huge,
-  });
-
-  final String huge;
-
-  factory Images.fromJson(Map<String, dynamic> json) => _$ImagesFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ImagesToJson(this);
-
-  @override
-  List<Object?> get props => [huge];
+  List<Object?> get props => [image];
 }
 
 @JsonSerializable()

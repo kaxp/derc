@@ -3,7 +3,6 @@ import 'package:kapil_sahu_cred/components/atoms/typography/header2.dart';
 import 'package:kapil_sahu_cred/components/molecules/app_bar/custom_appbar.dart';
 import 'package:kapil_sahu_cred/components/molecules/search_input_box/custom_search_input_box.dart';
 import 'package:kapil_sahu_cred/config/flavor_config.dart';
-import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
 import 'package:kapil_sahu_cred/modules/home/pages/home_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -37,7 +36,6 @@ void main() {
 
     expect(find.byType(CustomAppBar), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
-    expect(find.image(const AssetImage(AppImages.appLogo)), findsOneWidget);
 
     expect(find.byType(CustomSearchInputBox), findsOneWidget);
     // expect(find.byType(HomeInitialView), findsOneWidget);
@@ -47,7 +45,7 @@ void main() {
     //     find.byIcon(Icons.sentiment_very_satisfied_outlined), findsOneWidget);
 
     expect(find.byType(Header2), findsOneWidget);
-    // expect(find.text(AppStrings.searchForEvents), findsOneWidget);
+    // expect(find.text(AppStrings.noDataFound), findsOneWidget);
 
     //TODO(kaxp): Add more widget test for Home Page.
   });

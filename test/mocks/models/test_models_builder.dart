@@ -30,20 +30,9 @@ Event buildStoreEventFromTemplate({
 Performer buildPerformerFromTemplate({
   String image = '',
   int id = 0,
-  Images? images,
 }) {
   return Performer(
-    id: id,
     image: image,
-    images: images!,
-  );
-}
-
-Images buildImagesFromTemplate({
-  final String huge = '',
-}) {
-  return Images(
-    huge: huge,
   );
 }
 

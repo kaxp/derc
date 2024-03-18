@@ -19,7 +19,9 @@ EventsResponse _defaultEventsResponse() {
       Event(
           id: 1,
           performers: const [
-            Performer(id: 1, image: '', images: Images(huge: ''))
+            Performer(
+              image: '',
+            )
           ],
           datetimeLocal: DateTime.now(),
           title: 'Some title',
@@ -27,7 +29,9 @@ EventsResponse _defaultEventsResponse() {
       Event(
           id: 1,
           performers: const [
-            Performer(id: 1, image: '', images: Images(huge: ''))
+            Performer(
+              image: '',
+            )
           ],
           datetimeLocal: DateTime.now(),
           title: 'Some title',
@@ -48,21 +52,33 @@ EventsResponse _defaultLastPageEventsResponse() {
   return buildEventsResponseFromTemplate(
     events: [
       Event(
-          id: 1,
-          performers: const [
-            Performer(id: 1, image: '', images: Images(huge: ''))
-          ],
-          datetimeLocal: DateTime.now(),
-          title: 'Some title',
-          venue: const Venue(city: 'City 1', state: 'State 1')),
+        id: 1,
+        performers: const [
+          Performer(
+            image: '',
+          )
+        ],
+        datetimeLocal: DateTime.now(),
+        title: 'Some title',
+        venue: const Venue(
+          city: 'City 1',
+          state: 'State 1',
+        ),
+      ),
       Event(
-          id: 1,
-          performers: const [
-            Performer(id: 1, image: '', images: Images(huge: ''))
-          ],
-          datetimeLocal: DateTime.now(),
-          title: 'Some title',
-          venue: const Venue(city: 'City 1', state: 'State 1')),
+        id: 1,
+        performers: const [
+          Performer(
+            image: '',
+          )
+        ],
+        datetimeLocal: DateTime.now(),
+        title: 'Some title',
+        venue: const Venue(
+          city: 'City 1',
+          state: 'State 1',
+        ),
+      ),
     ],
     meta: const MetaData(total: 10, page: 1, perPage: 10),
   );
