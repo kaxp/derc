@@ -47,7 +47,9 @@ class _CustomSearchInputBoxState extends State<CustomSearchInputBox> {
     // add listener when suffic icon needs to be displayed
     widget.showSuffixIcon
         ? widget.controller!.addListener(() {
-            setState(() {});
+            if (mounted) {
+              setState(() {});
+            }
           })
         : null;
   }
@@ -64,7 +66,7 @@ class _CustomSearchInputBoxState extends State<CustomSearchInputBox> {
       decoration: InputDecoration(
         hintText: AppStrings.searchEvents,
         hintStyle: const TextStyle(color: AppColors.offWhiteColor),
-        border: InputBorder.none,
+        border: const OutlineInputBorder(),
         suffixIcon: widget.controller!.text.length > 0
             ? Container(
                 transform:

@@ -4,8 +4,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header1.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header2.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header3.dart';
+import 'package:kapil_sahu_cred/components/atoms/typography/header5.dart';
+import 'package:kapil_sahu_cred/components/atoms/typography/header6.dart';
 import 'package:kapil_sahu_cred/components/molecules/banners/main_event_banner.dart';
 import 'package:kapil_sahu_cred/components/molecules/search_input_box/custom_search_input_box.dart';
+import 'package:kapil_sahu_cred/components/molecules/snackbar/custom_snackbar.dart';
 import 'package:kapil_sahu_cred/components/organisms/list_views/search_result_list_view.dart';
 import 'package:kapil_sahu_cred/components/organisms/stack_view/stack_view_manager.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
@@ -48,19 +51,22 @@ class SearchPage {
         return BlocConsumer<SearchBloc, SearchState>(
           bloc: _seachBloc,
           listener: (context, state) {
-            if (state is SearchInitial) {
-            } else if (state is SearchLoading) {
+            if (state is SearchLoading) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: const CircularProgressIndicator(),
-                secondaryChild: const Text('Child 2 loading'),
-                buttonTitle: 'Loading...',
+                secondaryChild: Text(
+                  AppStrings.awaitingJoy,
+                  style: const TextStyle(color: AppColors.lightGreyColor),
+                ),
+                buttonTitle: AppStrings.awaitingJoy,
                 onButtonTap: () => () {},
               );
             } else if (state is SearchResultLoaded) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: _searchResultLoaded(state),
-                secondaryChild: const Text('Child 2 loaded'),
-                buttonTitle: _selectedEvent?.title ?? 'Detail View',
+                secondaryChild: Text(AppStrings.selectFromThrillingEvents,
+                    style: const TextStyle(color: AppColors.lightGreyColor)),
+                buttonTitle: AppStrings.detailView,
                 onButtonTap: () {
                   _currentStackIndex += 1;
                   _seachBloc.showEventDetail(_selectedEvent!);
@@ -69,8 +75,9 @@ class SearchPage {
             } else if (state is SearchResultEmpty) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: _searchResultEmpty(),
-                secondaryChild: const Text('Child 2 Empty state'),
-                buttonTitle: 'Back',
+                secondaryChild: Text(AppStrings.couldNotLocateEvent,
+                    style: const TextStyle(color: AppColors.lightGreyColor)),
+                buttonTitle: AppStrings.back,
                 onButtonTap: () {
                   _currentStackIndex -= 1;
                   _seachBloc.onEmptyViewSubmit();
@@ -79,49 +86,50 @@ class SearchPage {
             } else if (state is SearchResultFailed) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: const HomeInitialView(),
-                secondaryChild: const Text('Child 2 failed state'),
-                buttonTitle: 'Retry',
+                secondaryChild: Text(AppStrings.noResultFound,
+                    style: const TextStyle(color: AppColors.lightGreyColor)),
+                buttonTitle: AppStrings.retry,
                 onButtonTap: () =>
                     _seachBloc.searchEvents(_searchInputController.text),
-              );
-            } else if (state is SearchEventDetail) {
-              stackView[_currentStackIndex] = StackViewModel(
-                primaryChild: _searchEventDetail(state),
-                secondaryChild: const Text('Child event detail'),
-                buttonTitle: 'Buy Event Ticket',
-                onButtonTap: () {
-                  _currentStackIndex += 1;
-                  _seachBloc.onEventDetailSubmit();
-                },
               );
             } else if (state is SearchBuyEventTicket) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: _searchBuyTicketView(),
                 secondaryChild: const SizedBox.shrink(),
-                buttonTitle: 'Buy Event Ticket',
-                onButtonTap: () {
-                  //TODO(kaxp): Check what to do after ticket buy
-                  _seachBloc.onTicketBuy();
+                buttonTitle: AppStrings.buyTicket,
+                onButtonTap: () async {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    CustomSnackbar(
+                      message: AppStrings.ticketUnlocked,
+                      duration: const Duration(seconds: 5),
+                    ),
+                  );
+                  Modular.to.pop();
+                  onStackDismissed();
                 },
               );
-            } else {}
+            }
           },
           builder: (context, state) {
             if (state is SearchInitial) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: _searchInitialWidget,
-                secondaryChild: const Text('Child 1'),
-                buttonTitle: 'Search',
+                secondaryChild: Text(AppStrings.unlockTheMagic,
+                    style: const TextStyle(color: AppColors.lightGreyColor)),
+                buttonTitle: AppStrings.search,
                 onButtonTap: () {
-                  _currentStackIndex += 1;
-                  _seachBloc.searchEvents(_searchInputController.text);
+                  if (_searchInputController.text.trim().isNotEmpty) {
+                    _currentStackIndex += 1;
+                    _seachBloc.searchEvents(_searchInputController.text);
+                  }
                 },
               );
             } else if (state is SearchEventDetail) {
               stackView[_currentStackIndex] = StackViewModel(
                 primaryChild: _searchEventDetail(state),
-                secondaryChild: const Text('Child event detail'),
-                buttonTitle: 'Buy Event Ticket',
+                secondaryChild: Text(AppStrings.uncloverDetails,
+                    style: const TextStyle(color: AppColors.lightGreyColor)),
+                buttonTitle: AppStrings.buyTicket,
                 onButtonTap: () {
                   _currentStackIndex += 1;
                   _seachBloc.onEventDetailSubmit();
@@ -137,13 +145,13 @@ class SearchPage {
                   totalStackCount: totalStackCount,
                   currentStackIndex: _currentStackIndex,
                   onStackDismissed: () {
-                    Navigator.pop(context);
+                    Modular.to.pop();
                     onStackDismissed();
                   },
                   stackItems: stackView,
                   onStackChange: (stackIndex) {
                     _currentStackIndex = stackIndex;
-                    _seachBloc.onStackChange(stackIndex);
+                    _seachBloc.onStackChange(stackIndex, totalStackCount);
                   },
                 ),
               ),
@@ -154,25 +162,58 @@ class SearchPage {
     );
   }
 
-  Widget get _searchInitialWidget => Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          AppImages.icDataSearch(height: 320),
-          CustomSearchInputBox(
-            hintText: AppStrings.searchEvents,
-            onSubmitted: (query) {
-              _currentStackIndex += 1;
-              _seachBloc.searchEvents(query);
-            },
-            controller: _searchInputController,
-            showSuffixIcon: true,
-          ),
-        ],
+  Widget get _searchInitialWidget => Padding(
+        padding: const EdgeInsets.all(kSpacingXSmall),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: AppImages.icDataSearch(height: 220),
+            ),
+            Header5(
+              title: AppStrings.discoverPopularEvents,
+              color: AppColors.white,
+              fontSize: 16,
+            ),
+            const SizedBox(
+              height: kSpacingMedium,
+            ),
+            CustomSearchInputBox(
+              hintText: AppStrings.searchEvents,
+              onSubmitted: (query) {
+                if (query.trim().isNotEmpty) {
+                  _currentStackIndex += 1;
+                  _seachBloc.searchEvents(query);
+                }
+              },
+              controller: _searchInputController,
+              showSuffixIcon: true,
+            ),
+          ],
+        ),
       );
 
   Widget _searchResultLoaded(SearchState state) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppImages.icBlog(),
+          const SizedBox(
+            height: kSpacingSmall,
+          ),
+          Center(child: AppImages.icBlog(height: 160)),
+          const SizedBox(
+            height: kSpacingMedium,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kSpacingXSmall),
+            child: Header5(
+              title: AppStrings.peekBehind,
+              color: AppColors.white,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(
+            height: kSpacingXSmall,
+          ),
           state is SearchResultLoaded
               ? Expanded(
                   child: ListView(
@@ -182,6 +223,8 @@ class SearchPage {
                         events: state.totalEvents!,
                         onTap: (event) {
                           _selectedEvent = event;
+                          _currentStackIndex += 1;
+                          _seachBloc.showEventDetail(_selectedEvent!);
                         },
                       ),
                     ],
@@ -202,10 +245,11 @@ class SearchPage {
       children: [
         Expanded(
           child: ListView(
+            padding: const EdgeInsets.all(kSpacingXSmall),
             shrinkWrap: true,
             children: [
               const SizedBox(
-                height: kSpacingMedium,
+                height: kSpacingXxSmall,
               ),
               Center(
                 child: MainEventBanner(
@@ -218,7 +262,7 @@ class SearchPage {
               Header1(
                 title: event.title,
                 color: AppColors.redColor,
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
               const SizedBox(
@@ -245,11 +289,14 @@ class SearchPage {
   }
 
   Widget _searchResultEmpty() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kSpacingSmall),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AppImages.icDataNotFound(),
+          const SizedBox(
+            height: kSpacingSmall,
+          ),
           Header2(
             textAlign: TextAlign.center,
             title: AppStrings.noResultFound,
@@ -261,41 +308,38 @@ class SearchPage {
   }
 
   Widget _searchBuyTicketView() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Header2(
-          textAlign: TextAlign.center,
-          title: 'Buy Now?',
-          color: AppColors.redColor,
-        ),
-        const SizedBox(
-          height: kSpacingXSmall,
-        ),
-        const Header3(
-          textAlign: TextAlign.center,
-          title: 'Select the payment gateway to purchase the ticket',
-          color: AppColors.white,
-        ),
-        const SizedBox(
-          height: kSpacingMedium,
-        ),
-        AppImages.icRocket()
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kSpacingSmall),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(child: AppImages.icSuccess()),
+          Header6(
+            title: AppStrings.timeToMakeItYours,
+            color: AppColors.redColor,
+            fontSize: 20,
+          ),
+          Header5(
+            title: AppStrings.youAreStanding,
+            color: AppColors.white,
+            fontSize: 14,
+          ),
+        ],
+      ),
     );
   }
 }
 
 class StackViewModel {
   StackViewModel({
+    this.secondaryChild,
     required this.primaryChild,
-    required this.secondaryChild,
     required this.buttonTitle,
     required this.onButtonTap,
   });
 
+  final Widget? secondaryChild;
   final Widget primaryChild;
-  final Widget secondaryChild;
   final String buttonTitle;
   final VoidCallback onButtonTap;
 }

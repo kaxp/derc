@@ -7,6 +7,7 @@ import 'package:kapil_sahu_cred/components/molecules/snackbar/custom_snackbar.da
 import 'package:kapil_sahu_cred/components/organisms/list_views/search_result_list_view.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
+import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_empty_view.dart';
@@ -44,11 +45,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        leadingWidget: Center(
-          child: AppImages.icAppLogo(
-            height: kSpacingXLarge,
-            widget: kSpacingXLarge,
-          ),
+        titleWidget: AppImages.icAppLogo(
+          height: kSpacingXLarge,
+          widget: kSpacingXLarge,
         ),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> {
         ),
         padding: const EdgeInsets.all(16.0),
         child: DefaultElevatedButton(
-          title: 'Search the best events around you',
+          title: AppStrings.searchEventsAroundYou,
           onPressed: () {
             _homeBloc.onSeachTap();
           },
@@ -130,11 +129,6 @@ class _HomePageState extends State<HomePage> {
     if (_scrollController.position.pixels <=
         _scrollController.position.maxScrollExtent * 0.8) {
       _homeBloc.loadNextPage(_homeBloc.searchQuery ?? '');
-
-      // // When textinput is empty we don't want to call paging API
-      // if (_searchInputController.text.length > 0) {
-      //   _homeBloc.loadNextPage(_homeBloc.searchQuery);
-      // }
     }
   }
 }

@@ -11,9 +11,13 @@ class StackViewManager extends StatefulWidget {
     required this.stackItems,
     required this.onStackDismissed,
     required this.onStackChange,
-  }) : assert(
+  })  : assert(
           totalStackCount >= 2 && totalStackCount <= 4,
           'Number of stacks must be between 2 and 4.',
+        ),
+        assert(
+          totalStackCount >= 2,
+          'Number of stacks must be at least 2',
         );
 
   final int totalStackCount;
@@ -32,19 +36,13 @@ class _StackViewManagerState extends State<StackViewManager> {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
+              padding: const EdgeInsets.all(kSpacingMedium),
               onPressed: widget.onStackDismissed,
               icon: const Icon(
                 Icons.clear,
-                color: AppColors.white,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.info,
                 color: AppColors.white,
               ),
             ),
@@ -119,14 +117,36 @@ class StackViewItem extends StatelessWidget {
           alignment: Alignment.center,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Visibility(
-                visible: !isStackFocused,
-                child: stackItem?.secondaryChild ?? const SizedBox.shrink(),
+              AnimatedOpacity(
+                opacity: !isStackFocused ? 1.0 : 0.0,
+                duration: const Duration(seconds: 1),
+                curve: Curves.easeInOut,
+                child: Visibility(
+                  visible: !isStackFocused,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                          child: stackItem?.secondaryChild ??
+                              const SizedBox.shrink()),
+                      const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.white,
+                      )
+                    ],
+                  ),
+                ),
               ),
               Expanded(
-                child: Center(
-                    child: stackItem?.primaryChild ?? const SizedBox.shrink()),
+                child: Visibility(
+                  visible: isStackFocused,
+                  child: Center(
+                    child: stackItem?.primaryChild ?? const SizedBox.shrink(),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Container(

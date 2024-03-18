@@ -18,7 +18,7 @@ extension DioExceptionExt on DioException {
       case DioExceptionType.badResponse:
         return _getMessageFromDioExceptionType(this);
       case DioExceptionType.unknown:
-        return message ?? AppStrings.somethingWentWrong;
+        return message ?? AppStrings.unknownError;
     }
   }
 

@@ -14,8 +14,8 @@ mixin AppImages {
       _IMAGES_FOLDER_PATH + 'il_pfa_activity_data_bank_not_found.svg';
   static const String _icRocket = _IMAGES_FOLDER_PATH + 'il_rocket_point.svg';
 
-  static const _appLogo = 'assets/images/logo.png';
-  static const _errorPlaceholder = 'assets/images/error.png';
+  static const _appLogo = _IMAGES_FOLDER_PATH + 'logo.png';
+  static const _errorPlaceholder = _IMAGES_FOLDER_PATH + 'error.png';
 
   static Image icErrorPlaceholder(
           {required double height, required double widget}) =>
@@ -37,7 +37,10 @@ mixin AppImages {
         ),
       );
 
-  static SvgPicture icBlog() => SvgPicture.asset(_icBlog);
+  static SvgPicture icBlog({required double height}) => SvgPicture.asset(
+        _icBlog,
+        height: height,
+      );
   static SvgPicture icSomethingWentWrong() =>
       SvgPicture.asset(_icSomethingWentWrong);
 

@@ -57,32 +57,49 @@ class SearchBloc extends Cubit<SearchState> {
     ));
   }
 
-  void onTicketBuy() {}
-
-  void onStackChange(int stackIndex) {
-    switch (stackIndex) {
-      case 0:
-        emit(SearchInitial());
-        break;
-      case 1:
-        emit(SearchResultLoaded(
-          events: state.totalEvents!,
-        ));
-        break;
-      case 2:
-        emit(SearchEventDetail(
-          events: state.totalEvents,
-          selectedEvent: state.selectedEvent!,
-        ));
-        break;
-      case 3:
-        emit(SearchBuyEventTicket(
-          events: state.totalEvents,
-          selectedEvent: state.selectedEvent!,
-        ));
-        break;
-      default:
-      // close bottomSheet
+  void onStackChange(int stackIndex, int totalStackCount) {
+    if (totalStackCount == 2) {
+      switch (stackIndex) {
+        case 0:
+          emit(SearchEventDetail(
+            events: state.totalEvents,
+            selectedEvent: state.selectedEvent!,
+          ));
+          break;
+        case 1:
+          emit(SearchBuyEventTicket(
+            events: state.totalEvents,
+            selectedEvent: state.selectedEvent!,
+          ));
+          break;
+        default:
+        // close bottomSheet
+      }
+    } else {
+      switch (stackIndex) {
+        case 0:
+          emit(SearchInitial());
+          break;
+        case 1:
+          emit(SearchResultLoaded(
+            events: state.totalEvents!,
+          ));
+          break;
+        case 2:
+          emit(SearchEventDetail(
+            events: state.totalEvents,
+            selectedEvent: state.selectedEvent!,
+          ));
+          break;
+        case 3:
+          emit(SearchBuyEventTicket(
+            events: state.totalEvents,
+            selectedEvent: state.selectedEvent!,
+          ));
+          break;
+        default:
+        // close bottomSheet
+      }
     }
   }
 
