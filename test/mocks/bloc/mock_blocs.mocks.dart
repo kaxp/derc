@@ -3,10 +3,15 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:bloc/bloc.dart' as _i4;
+import 'package:bloc/bloc.dart' as _i5;
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart' as _i2;
+import 'package:kapil_sahu_cred/modules/home/models/events_response.dart'
+    as _i6;
+import 'package:kapil_sahu_cred/modules/search/bloc/search_bloc.dart' as _i3;
+import 'package:kapil_sahu_cred/modules/search/models/stack_view_model.dart'
+    as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -32,19 +37,20 @@ class _FakeHomeState_0 extends _i1.SmartFake implements _i2.HomeState {
         );
 }
 
+class _FakeSearchState_1 extends _i1.SmartFake implements _i3.SearchState {
+  _FakeSearchState_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [HomeBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockHomeBloc extends _i1.Mock implements _i2.HomeBloc {
-  @override
-  set searchQuery(String? _searchQuery) => super.noSuchMethod(
-        Invocation.setter(
-          #searchQuery,
-          _searchQuery,
-        ),
-        returnValueForMissingStub: null,
-      );
-
   @override
   _i2.HomeState get state => (super.noSuchMethod(
         Invocation.getter(#state),
@@ -59,11 +65,11 @@ class MockHomeBloc extends _i1.Mock implements _i2.HomeBloc {
       ) as _i2.HomeState);
 
   @override
-  _i3.Stream<_i2.HomeState> get stream => (super.noSuchMethod(
+  _i4.Stream<_i2.HomeState> get stream => (super.noSuchMethod(
         Invocation.getter(#stream),
-        returnValue: _i3.Stream<_i2.HomeState>.empty(),
-        returnValueForMissingStub: _i3.Stream<_i2.HomeState>.empty(),
-      ) as _i3.Stream<_i2.HomeState>);
+        returnValue: _i4.Stream<_i2.HomeState>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i2.HomeState>.empty(),
+      ) as _i4.Stream<_i2.HomeState>);
 
   @override
   bool get isClosed => (super.noSuchMethod(
@@ -73,24 +79,24 @@ class MockHomeBloc extends _i1.Mock implements _i2.HomeBloc {
       ) as bool);
 
   @override
-  _i3.Future<void> fetchEvents(String? searchString) => (super.noSuchMethod(
+  _i4.Future<void> fetchEvents(String? searchString) => (super.noSuchMethod(
         Invocation.method(
           #fetchEvents,
           [searchString],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<void> loadNextPage(String? searchString) => (super.noSuchMethod(
+  _i4.Future<void> loadNextPage(String? searchString) => (super.noSuchMethod(
         Invocation.method(
           #loadNextPage,
           [searchString],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   void onSeachTap() => super.noSuchMethod(
@@ -120,7 +126,7 @@ class MockHomeBloc extends _i1.Mock implements _i2.HomeBloc {
       );
 
   @override
-  void onChange(_i4.Change<_i2.HomeState>? change) => super.noSuchMethod(
+  void onChange(_i5.Change<_i2.HomeState>? change) => super.noSuchMethod(
         Invocation.method(
           #onChange,
           [change],
@@ -161,12 +167,197 @@ class MockHomeBloc extends _i1.Mock implements _i2.HomeBloc {
       );
 
   @override
-  _i3.Future<void> close() => (super.noSuchMethod(
+  _i4.Future<void> close() => (super.noSuchMethod(
         Invocation.method(
           #close,
           [],
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
+/// A class which mocks [SearchBloc].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSearchBloc extends _i1.Mock implements _i3.SearchBloc {
+  @override
+  int get currentStackIndex => (super.noSuchMethod(
+        Invocation.getter(#currentStackIndex),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
+  set currentStackIndex(int? _currentStackIndex) => super.noSuchMethod(
+        Invocation.setter(
+          #currentStackIndex,
+          _currentStackIndex,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  set selectedEvent(_i6.Event? _selectedEvent) => super.noSuchMethod(
+        Invocation.setter(
+          #selectedEvent,
+          _selectedEvent,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  Map<int, _i7.StackViewModel> get stackView => (super.noSuchMethod(
+        Invocation.getter(#stackView),
+        returnValue: <int, _i7.StackViewModel>{},
+        returnValueForMissingStub: <int, _i7.StackViewModel>{},
+      ) as Map<int, _i7.StackViewModel>);
+
+  @override
+  _i3.SearchState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _FakeSearchState_1(
+          this,
+          Invocation.getter(#state),
+        ),
+        returnValueForMissingStub: _FakeSearchState_1(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i3.SearchState);
+
+  @override
+  _i4.Stream<_i3.SearchState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i4.Stream<_i3.SearchState>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i3.SearchState>.empty(),
+      ) as _i4.Stream<_i3.SearchState>);
+
+  @override
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  void searchEvents(String? query) => super.noSuchMethod(
+        Invocation.method(
+          #searchEvents,
+          [query],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void showEventDetail(_i6.Event? event) => super.noSuchMethod(
+        Invocation.method(
+          #showEventDetail,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onEmptyViewSubmit() => super.noSuchMethod(
+        Invocation.method(
+          #onEmptyViewSubmit,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onEventDetailSubmit() => super.noSuchMethod(
+        Invocation.method(
+          #onEventDetailSubmit,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onStackChange(
+    int? stackIndex,
+    int? totalStackCount,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onStackChange,
+          [
+            stackIndex,
+            totalStackCount,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void setInititalState(_i6.Event? selectedEvent) => super.noSuchMethod(
+        Invocation.method(
+          #setInititalState,
+          [selectedEvent],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void emit(_i3.SearchState? state) => super.noSuchMethod(
+        Invocation.method(
+          #emit,
+          [state],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onChange(_i5.Change<_i3.SearchState>? change) => super.noSuchMethod(
+        Invocation.method(
+          #onChange,
+          [change],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addError(
+    Object? error, [
+    StackTrace? stackTrace,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onError(
+    Object? error,
+    StackTrace? stackTrace,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i4.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

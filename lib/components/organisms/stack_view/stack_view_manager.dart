@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kapil_sahu_cred/components/atoms/buttons/default_elevated_button.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
-import 'package:kapil_sahu_cred/modules/home/pages/search_page.dart';
+import 'package:kapil_sahu_cred/modules/search/models/stack_view_model.dart';
 
 class StackViewManager extends StatefulWidget {
   const StackViewManager({
@@ -35,33 +35,15 @@ class _StackViewManagerState extends State<StackViewManager> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            IconButton(
-              padding: const EdgeInsets.all(kSpacingMedium),
-              onPressed: widget.onStackDismissed,
-              icon: const Icon(
-                Icons.clear,
-                color: AppColors.white,
-              ),
-            ),
-          ],
-        ),
+        _BuildDismissButton(onStackDismissed: widget.onStackDismissed),
         Expanded(
           child: Stack(
             children: List.generate(widget.totalStackCount, (index) {
               final heightFactor = 0.82 - (0.1 * index);
               final isVisible = index <= widget.currentStackIndex;
 
-              return StackViewItem(
-                color: index == 0
-                    ? const Color(0xff40465a)
-                    : index == 1
-                        ? const Color(0xff3a4051)
-                        : index == 2
-                            ? const Color(0xff344048)
-                            : const Color(0xff2e3943),
+              return _BuildStackViewItem(
+                color: _getStackItemColor(index),
                 isVisible: isVisible,
                 heightFactor: heightFactor,
                 onStackChange: () {
@@ -79,10 +61,43 @@ class _StackViewManagerState extends State<StackViewManager> {
       ],
     );
   }
+
+  Color _getStackItemColor(int index) {
+    return index == 0
+        ? const Color(0xff40465a)
+        : index == 1
+            ? const Color(0xff3a4051)
+            : index == 2
+                ? const Color(0xff344048)
+                : const Color(0xff2e3943);
+  }
 }
 
-class StackViewItem extends StatelessWidget {
-  const StackViewItem({
+class _BuildDismissButton extends StatelessWidget {
+  const _BuildDismissButton({required this.onStackDismissed});
+
+  final VoidCallback onStackDismissed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          padding: const EdgeInsets.all(kSpacingMedium),
+          onPressed: onStackDismissed,
+          icon: const Icon(
+            Icons.clear,
+            color: AppColors.white,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BuildStackViewItem extends StatelessWidget {
+  const _BuildStackViewItem({
     required this.color,
     required this.isVisible,
     required this.heightFactor,
@@ -148,7 +163,7 @@ class StackViewItem extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: kSpacingMedium),
               Container(
                 child: DefaultElevatedButton(
                   title: stackItem?.buttonTitle ?? '',

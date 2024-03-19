@@ -28,11 +28,12 @@ void runMain({
       ),
     );
   }, (error, stack) {
+    // Record errors to analytics here, like FirebaseCrashlytics etc.
+
     final details = FlutterErrorDetails(exception: error, stack: stack);
     if (dumpErrorToConsole) {
       FlutterError.dumpErrorToConsole(details);
     }
-    // Record errors to analytics here, like FirebaseCrashlytics etc.
   });
 }
 
@@ -67,7 +68,7 @@ class RootApp extends StatelessWidget {
     ]);
 
     return MaterialApp.router(
-      title: 'Digital',
+      title: 'DERC',
       theme: AppTheme.defaultTheme,
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,

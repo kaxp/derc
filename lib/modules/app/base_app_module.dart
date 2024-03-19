@@ -1,4 +1,5 @@
 import 'package:kapil_sahu_cred/modules/home/home_module.dart';
+import 'package:kapil_sahu_cred/modules/search/bloc/search_bloc.dart';
 import 'package:kapil_sahu_cred/networking/constants/network_constants.dart';
 import 'package:kapil_sahu_cred/networking/http_client.dart';
 import 'package:kapil_sahu_cred/networking/models/app_dio.dart';
@@ -14,6 +15,13 @@ class BaseAppModule extends Module {
             ),
           ),
         ),
+
+        // SearchBloc should not be singleton, as we require
+        // new instance when user start the search every time
+        Bind<SearchBloc>(
+          (_) => SearchBloc(),
+          isSingleton: false,
+        ),
       ];
 
   @override
@@ -27,5 +35,4 @@ class BaseAppModule extends Module {
 
 class BaseAppModuleRoutes {
   static const String homePage = '/';
-  static const String detailPage = '/detail/';
 }

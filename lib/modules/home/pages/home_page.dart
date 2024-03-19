@@ -10,11 +10,12 @@ import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
 import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart';
+import 'package:kapil_sahu_cred/modules/home/models/events_response.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_empty_view.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_initial_view.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_paging_loading_view.dart';
-import 'package:kapil_sahu_cred/modules/home/pages/search_page.dart';
+import 'package:kapil_sahu_cred/modules/search/pages/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _homeBloc = Modular.get<HomeBloc>();
+  final HomeBloc _homeBloc = Modular.get<HomeBloc>();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -37,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _scrollController.dispose();
-
     super.dispose();
   }
 
@@ -61,9 +61,8 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           } else if (state is HomeSearchEnabled) {
-            SearchPage().showSearchView(
+            _showSearchView(
               context: context,
-              onStackDismissed: _homeBloc.onStackDismissed,
               totalStackCount: 4,
             );
           }
@@ -86,18 +85,17 @@ class _HomePageState extends State<HomePage> {
                     ? SearchResultListView(
                         events: state.events,
                         onTap: (event) {
-                          SearchPage().showSearchView(
+                          _showSearchView(
                             context: context,
-                            onStackDismissed: _homeBloc.onStackDismissed,
                             totalStackCount: 2,
-                            selectedEvent: event,
+                            event: event,
                           );
                         },
                       )
                     : const HomeInitialView(),
 
                 // Pagination loader
-                if (state is HomeLoadingMore) const HomePagingLoadingView(),
+                if (state is HomeLoadMore) const HomePagingLoadingView(),
               ],
             ),
           );
@@ -114,7 +112,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(kSpacingMedium),
         child: DefaultElevatedButton(
           title: AppStrings.searchEventsAroundYou,
           onPressed: () {
@@ -128,7 +126,20 @@ class _HomePageState extends State<HomePage> {
   void _onEventListScrolledListener() {
     if (_scrollController.position.pixels <=
         _scrollController.position.maxScrollExtent * 0.8) {
-      _homeBloc.loadNextPage(_homeBloc.searchQuery ?? '');
+      _homeBloc.loadNextPage('');
     }
+  }
+
+  void _showSearchView({
+    required BuildContext context,
+    required int totalStackCount,
+    Event? event,
+  }) {
+    SearchPage().showSearchView(
+      context: context,
+      onStackDismissed: _homeBloc.onStackDismissed,
+      totalStackCount: totalStackCount,
+      selectedEvent: event,
+    );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:kapil_sahu_cred/modules/app/base_app_module.dart';
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart';
-import 'package:kapil_sahu_cred/modules/home/bloc/search_bloc.dart';
 import 'package:kapil_sahu_cred/modules/home/pages/home_page.dart';
 import 'package:kapil_sahu_cred/modules/home/repositories/home_repo.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -10,13 +9,6 @@ class HomeModule extends BaseAppModule {
   List<Bind> get binds => [
         Bind<HomeRepo>((_) => HomeRepo()),
         Bind<HomeBloc>((_) => HomeBloc()),
-
-        // SearchBloc should not be singleton, as we require
-        // new instance when user start the search every time
-        Bind<SearchBloc>(
-          (_) => SearchBloc(),
-          isSingleton: false,
-        ),
       ];
 
   @override

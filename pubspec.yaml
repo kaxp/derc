@@ -49,11 +49,6 @@ flutter:
     # Locales
     - i18n/en.json
 
-    # Env files
-    - development.env
-    - mock.env
-    - production.env
-
   fonts:
     - family: Poppins
       fonts:

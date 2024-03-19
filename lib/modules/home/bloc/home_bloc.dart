@@ -12,34 +12,8 @@ part 'home_state.dart';
 
 class HomeBloc extends Cubit<HomeState> {
   HomeBloc() : super(HomeInitial());
-  final _homeRepo = Modular.get<HomeRepo>();
-  String? searchQuery;
 
-  // HomeState getters
-
-  HomeState get _loadingMoreStateWithExistingAvailableData => HomeLoadingMore(
-        events: state.events,
-        searchQuery: state.searchQuery!,
-        hasReachedEnd: state.hasReachedEnd,
-        page: state.page,
-        totalPage: state.totalPage,
-      );
-
-  void _emitErrorStateWithExistingAvailableData({
-    required String errorMessage,
-    required String? searchQuery,
-  }) {
-    emit(
-      HomeError(
-        errorMessage: errorMessage,
-        events: state.events,
-        hasReachedEnd: state.hasReachedEnd,
-        page: state.page,
-        totalPage: state.totalPage,
-        searchQuery: searchQuery!,
-      ),
-    );
-  }
+  final HomeRepo _homeRepo = Modular.get<HomeRepo>();
 
   /// [fetchEvents] method is used for fetching the event data
   /// on user search.
@@ -55,7 +29,6 @@ class HomeBloc extends Cubit<HomeState> {
         emit(
           HomeLoaded(
             events: response.events,
-            searchQuery: searchString ?? '',
             page: response.meta.page,
             hasReachedEnd: response.meta.total - 10 <=
                 0, // when (total_result_count - 10 <= 0) == true, means we are at last page.
@@ -66,24 +39,26 @@ class HomeBloc extends Cubit<HomeState> {
         emit(HomeEmpty());
       }
     } on DioException catch (error) {
-      _emitErrorStateWithExistingAvailableData(
-        errorMessage: error.errorMessage(),
-        searchQuery: searchString,
-      );
+      _handleError(error);
     }
   }
 
   /// [loadNextPage] method is used for fetching the next available
   /// pagination data when user scroll to the bottom of screen.
   Future<void> loadNextPage(String? searchString) async {
-    if (state.hasReachedEnd ||
-        state is! HomeLoaded ||
-        state is HomeLoadingMore) {
+    if (state.hasReachedEnd || state is! HomeLoaded || state is HomeLoadMore) {
       return;
     }
 
     try {
-      emit(_loadingMoreStateWithExistingAvailableData);
+      emit(
+        HomeLoadMore(
+          events: state.events,
+          hasReachedEnd: state.hasReachedEnd,
+          page: state.page,
+          totalPage: state.totalPage,
+        ),
+      );
 
       final response = await _homeRepo.fetchEventsData(
         searchString: searchString!,
@@ -93,7 +68,6 @@ class HomeBloc extends Cubit<HomeState> {
       emit(
         HomeLoaded(
           events: state.events + response.events,
-          searchQuery: searchString,
           page: response.meta.page,
           hasReachedEnd: response.meta.total - 10 <=
               0, // when (total_result - 10 <= 0) == true, means we are at last page.
@@ -102,30 +76,31 @@ class HomeBloc extends Cubit<HomeState> {
         ),
       );
     } on DioException catch (error) {
-      _emitErrorStateWithExistingAvailableData(
-        errorMessage: error.errorMessage(),
-        searchQuery: searchString,
-      );
+      _handleError(error);
     }
   }
 
-  void onSeachTap() {
-    emit(HomeSearchEnabled(
+  void _handleError(DioException error) {
+    emit(HomeError(
+      errorMessage: error.errorMessage(),
       events: state.events,
-      searchQuery: state.searchQuery!,
       hasReachedEnd: state.hasReachedEnd,
       page: state.page,
       totalPage: state.totalPage,
     ));
   }
 
-  void onStackDismissed() {
-    emit(HomeLoaded(
-      events: state.events,
-      searchQuery: state.searchQuery!,
-      page: state.page,
-      hasReachedEnd: state.hasReachedEnd,
-      totalPage: state.totalPage,
-    ));
-  }
+  void onSeachTap() => emit(HomeSearchEnabled(
+        events: state.events,
+        hasReachedEnd: state.hasReachedEnd,
+        page: state.page,
+        totalPage: state.totalPage,
+      ));
+
+  void onStackDismissed() => emit(HomeLoaded(
+        events: state.events,
+        page: state.page,
+        hasReachedEnd: state.hasReachedEnd,
+        totalPage: state.totalPage,
+      ));
 }
