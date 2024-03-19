@@ -46,15 +46,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        leadingWidget: Center(
-          child: AppImages.icAppLogo(
-            height: kSpacingXLarge,
-            widget: kSpacingXLarge,
+        titleWidget: Container(
+          transform: Matrix4.translationValues(-kSpacingXSmall, 0, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: AppImages.icAppLogo(
+                  height: kSpacingXLarge,
+                  widget: kSpacingXLarge,
+                ),
+              ),
+              const SizedBox(
+                width: kSpacingSmall,
+              ),
+              const Header2(
+                title: 'DERC',
+                color: AppColors.redColor,
+              ),
+            ],
           ),
-        ),
-        titleWidget: const Header2(
-          title: 'DERC',
-          color: AppColors.redColor,
         ),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
