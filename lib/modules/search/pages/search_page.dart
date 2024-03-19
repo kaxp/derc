@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header3.dart';
-import 'package:kapil_sahu_cred/components/organisms/stack_view/stack_view_manager.dart';
+import 'package:kapil_sahu_cred/components/organisms/stack_view_manager/stack_view_manager.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/modules/home/models/events_response.dart';
@@ -94,9 +94,9 @@ class SearchPage {
           }
         },
       );
-    } else if (state is SearchEventDetail) {
+    } else if (state is SearchShowEventDetail) {
       _searchBloc.stackView[_searchBloc.currentStackIndex] = StackViewModel(
-        primaryChild: SearchEventDetailWidget(state: state),
+        primaryChild: SearchShowEventDetailWidget(state: state),
         secondaryChild: Header3(
           title: AppStrings.uncloverDetails,
           color: AppColors.lightGreyColor,

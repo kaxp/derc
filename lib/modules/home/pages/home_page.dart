@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kapil_sahu_cred/components/atoms/buttons/default_elevated_button.dart';
+import 'package:kapil_sahu_cred/components/atoms/typography/header2.dart';
 import 'package:kapil_sahu_cred/components/molecules/app_bar/custom_appbar.dart';
 import 'package:kapil_sahu_cred/components/molecules/loading_overlay/loading_overlay.dart';
 import 'package:kapil_sahu_cred/components/molecules/snackbar/custom_snackbar.dart';
+import 'package:kapil_sahu_cred/components/molecules/states/empty_state_view.dart';
+import 'package:kapil_sahu_cred/components/molecules/states/error_state_view.dart';
 import 'package:kapil_sahu_cred/components/organisms/list_views/search_result_list_view.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
@@ -11,8 +14,6 @@ import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/home/bloc/home_bloc.dart';
 import 'package:kapil_sahu_cred/modules/home/models/events_response.dart';
-import 'package:kapil_sahu_cred/modules/home/widgets/home_empty_view.dart';
-import 'package:kapil_sahu_cred/modules/home/widgets/home_initial_view.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/modules/home/widgets/home_paging_loading_view.dart';
 import 'package:kapil_sahu_cred/modules/search/pages/search_page.dart';
@@ -45,9 +46,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        titleWidget: AppImages.icAppLogo(
-          height: kSpacingXLarge,
-          widget: kSpacingXLarge,
+        leadingWidget: Center(
+          child: AppImages.icAppLogo(
+            height: kSpacingXLarge,
+            widget: kSpacingXLarge,
+          ),
+        ),
+        titleWidget: const Header2(
+          title: 'DERC',
+          color: AppColors.redColor,
         ),
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
@@ -68,14 +75,14 @@ class _HomePageState extends State<HomePage> {
           }
         },
         builder: (context, state) {
-          if (state is HomeInitial) {
-            return const HomeInitialView();
+          if (state is HomeError) {
+            return const ErrorStateView();
           } else if (state is HomeEmpty) {
-            return const HomeEmptyView();
+            return const EmptyStateView();
           }
 
           return LoadingOverlay(
-            isLoading: state is HomeLoading,
+            isLoading: state is HomeInitial || state is HomeLoading,
             child: ListView(
               controller: _scrollController,
               shrinkWrap: true,
@@ -92,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                           );
                         },
                       )
-                    : const HomeInitialView(),
+                    : const EmptyStateView(),
 
                 // Pagination loader
                 if (state is HomeLoadMore) const HomePagingLoadingView(),

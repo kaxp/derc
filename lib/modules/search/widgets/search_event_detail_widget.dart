@@ -7,10 +7,10 @@ import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/search/bloc/search_bloc.dart';
 import 'package:kapil_sahu_cred/utils/helpers.dart';
 
-class SearchEventDetailWidget extends StatelessWidget {
-  const SearchEventDetailWidget({super.key, required this.state});
+class SearchShowEventDetailWidget extends StatelessWidget {
+  const SearchShowEventDetailWidget({super.key, required this.state});
 
-  final SearchEventDetail state;
+  final SearchShowEventDetail state;
 
   @override
   Widget build(BuildContext context) {

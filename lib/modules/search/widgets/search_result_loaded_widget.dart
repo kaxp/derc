@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header5.dart';
+import 'package:kapil_sahu_cred/components/molecules/states/empty_state_view.dart';
 import 'package:kapil_sahu_cred/components/organisms/list_views/search_result_list_view.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_images.dart';
 import 'package:kapil_sahu_cred/constants/app_strings.dart';
 import 'package:kapil_sahu_cred/constants/spacing_constants.dart';
 import 'package:kapil_sahu_cred/modules/home/models/events_response.dart';
-import 'package:kapil_sahu_cred/modules/home/widgets/home_initial_view.dart';
 import 'package:kapil_sahu_cred/modules/search/bloc/search_bloc.dart';
 
 class SearchResultLoadedWidget extends StatelessWidget {
@@ -51,7 +51,7 @@ class SearchResultLoadedWidget extends StatelessWidget {
                   ],
                 ),
               )
-            : const HomeInitialView()
+            : const EmptyStateView()
       ],
     );
   }

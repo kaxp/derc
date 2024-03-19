@@ -241,13 +241,14 @@ class MockSearchBloc extends _i1.Mock implements _i3.SearchBloc {
       ) as bool);
 
   @override
-  void searchEvents(String? query) => super.noSuchMethod(
+  _i4.Future<void> searchEvents(String? query) => (super.noSuchMethod(
         Invocation.method(
           #searchEvents,
           [query],
         ),
-        returnValueForMissingStub: null,
-      );
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   void showEventDetail(_i6.Event? event) => super.noSuchMethod(

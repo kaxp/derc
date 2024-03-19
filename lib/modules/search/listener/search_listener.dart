@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header3.dart';
 import 'package:kapil_sahu_cred/components/molecules/snackbar/custom_snackbar.dart';
+import 'package:kapil_sahu_cred/components/molecules/states/empty_state_view.dart';
+import 'package:kapil_sahu_cred/components/molecules/states/error_state_view.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
 import 'package:kapil_sahu_cred/constants/app_strings.dart';
-import 'package:kapil_sahu_cred/modules/home/widgets/home_empty_view.dart';
-import 'package:kapil_sahu_cred/modules/home/widgets/home_initial_view.dart';
 import 'package:kapil_sahu_cred/modules/search/bloc/search_bloc.dart';
 import 'package:kapil_sahu_cred/modules/search/models/stack_view_model.dart';
 import 'package:kapil_sahu_cred/modules/search/widgets/search_buy_ticket_widget.dart';
@@ -53,7 +53,7 @@ class SearchListener {
       );
     } else if (state is SearchResultEmpty) {
       bloc.stackView[bloc.currentStackIndex] = StackViewModel(
-        primaryChild: const HomeEmptyView(),
+        primaryChild: const EmptyStateView(),
         secondaryChild: Header3(
           title: AppStrings.couldNotLocateEvent,
           color: AppColors.lightGreyColor,
@@ -64,9 +64,9 @@ class SearchListener {
           bloc.onEmptyViewSubmit();
         },
       );
-    } else if (state is SearchResultFailed) {
+    } else if (state is SearchResultError) {
       bloc.stackView[bloc.currentStackIndex] = StackViewModel(
-        primaryChild: const HomeInitialView(),
+        primaryChild: const ErrorStateView(),
         secondaryChild: Header3(
           title: AppStrings.noResultFound,
           color: AppColors.lightGreyColor,

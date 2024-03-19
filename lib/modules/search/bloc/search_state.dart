@@ -37,8 +37,8 @@ class SearchResultEmpty extends SearchState {
         );
 }
 
-class SearchResultFailed extends SearchState {
-  const SearchResultFailed({
+class SearchResultError extends SearchState {
+  const SearchResultError({
     required this.exception,
     required this.message,
   });
@@ -54,8 +54,8 @@ class SearchResultFailed extends SearchState {
       ];
 }
 
-class SearchEventDetail extends SearchState {
-  const SearchEventDetail({
+class SearchShowEventDetail extends SearchState {
+  const SearchShowEventDetail({
     required Event selectedEvent,
     required List<Event>? events,
   }) : super(

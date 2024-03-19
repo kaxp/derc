@@ -5,6 +5,8 @@ import 'package:kapil_sahu_cred/networking/http_client.dart';
 import 'package:kapil_sahu_cred/networking/models/app_dio.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+/// [BaseAppModule] is the primary module that will hold all the common
+/// dependencies
 class BaseAppModule extends Module {
   @override
   List<Bind> get binds => [

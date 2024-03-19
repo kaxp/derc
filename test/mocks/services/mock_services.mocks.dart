@@ -7,9 +7,11 @@ import 'dart:async' as _i5;
 import 'dart:ui' as _i7;
 
 import 'package:flutter/material.dart' as _i6;
-import 'package:flutter_modular/src/presenter/models/modular_navigator.dart'
-    as _i2;
+import 'package:flutter_modular/flutter_modular.dart' as _i2;
 import 'package:flutter_modular/src/presenter/models/route.dart' as _i4;
+import 'package:kapil_sahu_cred/modules/home/models/events_response.dart'
+    as _i9;
+import 'package:kapil_sahu_cred/modules/search/pages/search_page.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i3;
 
@@ -225,6 +227,32 @@ class MockIModularNavigator extends _i1.Mock implements _i2.IModularNavigator {
         Invocation.method(
           #removeListener,
           [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [SearchPage].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSearchPage extends _i1.Mock implements _i8.SearchPage {
+  @override
+  void showSearchView({
+    required _i6.BuildContext? context,
+    required _i7.VoidCallback? onStackDismissed,
+    required int? totalStackCount,
+    _i9.Event? selectedEvent,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #showSearchView,
+          [],
+          {
+            #context: context,
+            #onStackDismissed: onStackDismissed,
+            #totalStackCount: totalStackCount,
+            #selectedEvent: selectedEvent,
+          },
         ),
         returnValueForMissingStub: null,
       );

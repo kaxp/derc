@@ -98,7 +98,7 @@ void main() async {
     );
     _mockHomeRepo = MockHomeRepo();
     _mockHomeBloc = MockHomeBloc();
-    when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+    when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
         .thenAnswer((_) => Future.value(_defaultEventsResponse()));
   });
 
@@ -124,43 +124,29 @@ void main() async {
     });
 
     test('''Given fetchEvents() is called and state is HomeInitial
-        When value of searchString is "Hello"
-        And fetchEventsData method return the result
-        Then state should change to HomeLoaded''', () async {
-      final bloc = HomeBloc();
-
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
-          .thenAnswer((_) => Future.value(_defaultEventsResponse()));
-
-      await bloc.fetchEvents('Hello');
-      expect(bloc.state, isA<HomeLoaded>());
-    });
-
-    test('''Given fetchEvents() is called and state is HomeInitial
-        When value of searchString is "Hello"
+        When value of searchString is empty
         And fetchEventsData method return empty event list
         Then state should change to HomeEmpty''', () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
           .thenAnswer((_) => Future.value(_defaultEmptyEventsResponse()));
 
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       expect(bloc.state, isA<HomeEmpty>());
     });
 
     test('''Given fetchEvents() is called and state is HomeInitial
-        When value of searchString is "Hello"
+        When value of searchString is empty
         And fetchEventsData method throw DioException
         Then state should change to HomeError''', () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
-          .thenAnswer(
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1)).thenAnswer(
         (_) async => throw MockDioException(),
       );
 
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       expect(bloc.state, isA<HomeError>());
     });
   });
@@ -171,18 +157,16 @@ void main() async {
         () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
-          .thenAnswer(
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1)).thenAnswer(
         (_) async => throw MockDioException(),
       );
 
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       when(bloc.state is HomeError);
 
-      await bloc.loadNextPage('Hello');
+      await bloc.loadNextPage('');
 
-      verifyNever(
-          _mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 2));
+      verifyNever(_mockHomeRepo.fetchEventsData(searchString: '', page: 2));
     });
 
     test('''Given loadNextPage() is called and state is HomeLoaded
@@ -191,68 +175,66 @@ void main() async {
         () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
           .thenAnswer((_) => Future.value(_defaultLastPageEventsResponse()));
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       when(bloc.state is HomeLoaded);
 
-      await bloc.loadNextPage('How are you');
+      await bloc.loadNextPage('');
 
-      verifyNever(
-          _mockHomeRepo.fetchEventsData(searchString: 'How are you', page: 2));
+      verifyNever(_mockHomeRepo.fetchEventsData(searchString: '', page: 2));
     });
 
     test('''Given loadNextPage() is called and state is HomeLoaded
-         When value of searchString is "How are you" and page is 2
+         When value of searchString is empty and page is 2
         And fetchEventsData method during pagination return the response
         Then state should change to HomeLoaded''', () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
           .thenAnswer((_) => Future.value(_defaultEventsResponse()));
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       when(bloc.state is HomeLoaded);
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'How are you', page: 2))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 2))
           .thenAnswer((_) => Future.value(_defaultEventsResponse()));
-      await bloc.loadNextPage('How are you');
+      await bloc.loadNextPage('');
       expect(bloc.state, isA<HomeLoaded>());
     });
 
     test('''Given loadNextPage() is called and state is HomeLoaded
-        When value of searchString is "How are you" and page is 2
+        When value of searchString is empty and page is 2
         And fetchEventsData method during pagination return empty event list
         Then state should stay in HomeLoaded''', () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
           .thenAnswer((_) => Future.value(_defaultEventsResponse()));
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       when(bloc.state is HomeLoaded);
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'How are you', page: 2))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 2))
           .thenAnswer((_) => Future.value(_defaultEmptyEventsResponse()));
-      await bloc.loadNextPage('How are you');
+      await bloc.loadNextPage('');
 
       expect(bloc.state, isA<HomeLoaded>());
     });
 
     test('''Given loadNextPage() is called and state is HomeLoaded
-        When value of searchString is "How are you" and page is 2
+        When value of searchString is empty and page is 2
         And fetchEventsData method during pagination return DioException
         Then state should change to HomeError''', () async {
       final bloc = HomeBloc();
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'Hello', page: 1))
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 1))
           .thenAnswer((_) => Future.value(_defaultEventsResponse()));
-      await bloc.fetchEvents('Hello');
+      await bloc.fetchEvents('');
       when(bloc.state is HomeLoaded);
 
-      when(_mockHomeRepo.fetchEventsData(searchString: 'How are you', page: 2))
-          .thenAnswer(
+      when(_mockHomeRepo.fetchEventsData(searchString: '', page: 2)).thenAnswer(
         (_) async => throw MockDioException(),
       );
-      await bloc.loadNextPage('How are you');
+      await bloc.loadNextPage('');
 
       expect(bloc.state, isA<HomeError>());
     });

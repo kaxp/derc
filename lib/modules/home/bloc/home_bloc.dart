@@ -16,7 +16,6 @@ class HomeBloc extends Cubit<HomeState> {
   final HomeRepo _homeRepo = Modular.get<HomeRepo>();
 
   /// [fetchEvents] method is used for fetching the event data
-  /// on user search.
   Future<void> fetchEvents(String? searchString) async {
     try {
       emit(HomeLoading());
@@ -90,13 +89,21 @@ class HomeBloc extends Cubit<HomeState> {
     ));
   }
 
-  void onSeachTap() => emit(HomeSearchEnabled(
+  /// Open the search stack view when state of the
+  /// page is not [HomeError]
+  void onSeachTap() {
+    if (state is! HomeError) {
+      emit(HomeSearchEnabled(
         events: state.events,
         hasReachedEnd: state.hasReachedEnd,
         page: state.page,
         totalPage: state.totalPage,
       ));
+    }
+  }
 
+  /// Close the search stack view and land the user
+  /// on home page.
   void onStackDismissed() => emit(HomeLoaded(
         events: state.events,
         page: state.page,

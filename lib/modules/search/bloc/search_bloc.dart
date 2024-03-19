@@ -18,7 +18,9 @@ class SearchBloc extends Cubit<SearchState> {
   final Map<int, StackViewModel> stackView = {};
 
   /// Search for events based on query.
-  void searchEvents(String query) async {
+  ///
+  /// Constraint: Here we are fetching data of 1st page only.
+  Future<void> searchEvents(String query) async {
     try {
       emit(SearchLoading());
 
@@ -33,13 +35,14 @@ class SearchBloc extends Cubit<SearchState> {
         emit(SearchResultEmpty(events: response.events));
       }
     } on DioException catch (error) {
-      emit(SearchResultFailed(exception: error, message: error.toString()));
+      emit(SearchResultError(exception: error, message: error.toString()));
     }
   }
 
   /// Show details of the selected event.
   void showEventDetail(Event event) {
-    emit(SearchEventDetail(selectedEvent: event, events: state.totalEvents));
+    emit(
+        SearchShowEventDetail(selectedEvent: event, events: state.totalEvents));
   }
 
   /// Reset state to initial when submitting from empty view.
@@ -56,6 +59,16 @@ class SearchBloc extends Cubit<SearchState> {
   }
 
   /// Handle stack change based on stack index and total stack count.
+  ///
+  /// When user open the `Search StackView` by clicking Event item on homepage then the
+  /// total totalStackCount will be 2 and we will use [_handleStackChangeForTwoStacks]
+  /// method to update the states.
+  ///
+  /// When user open the Search StackView from Search Button on homepage then the total
+  /// totalStackCount will be 4 and we will use [_handleStackChangeForMultipleStacks]
+  /// method to update the states.
+  ///
+  /// We should refactor this methods based on the totalStackCount.
   void onStackChange(int stackIndex, int totalStackCount) {
     switch (totalStackCount) {
       case 2:
@@ -69,7 +82,7 @@ class SearchBloc extends Cubit<SearchState> {
   void _handleStackChangeForTwoStacks(int stackIndex) {
     switch (stackIndex) {
       case 0:
-        emit(SearchEventDetail(
+        emit(SearchShowEventDetail(
             events: state.totalEvents, selectedEvent: state.selectedEvent!));
         break;
       case 1:
@@ -88,22 +101,24 @@ class SearchBloc extends Cubit<SearchState> {
         emit(SearchResultLoaded(events: state.totalEvents!));
         break;
       case 2:
-        emit(SearchEventDetail(
+        emit(SearchShowEventDetail(
             events: state.totalEvents, selectedEvent: state.selectedEvent!));
         break;
       case 3:
         emit(SearchBuyEventTicket(
             events: state.totalEvents, selectedEvent: state.selectedEvent!));
         break;
-      default:
-      // Close bottomSheet
     }
   }
 
   /// Set initial state, optionally with selected event.
+  ///
+  /// When user open StackView by clicking on Event cell in homepage
+  /// then the search page state will be [SearchShowEventDetail] or else
+  /// it will be [SearchInitial]
   void setInititalState(Event? selectedEvent) {
     if (selectedEvent != null) {
-      emit(SearchEventDetail(
+      emit(SearchShowEventDetail(
         selectedEvent: selectedEvent,
         events: state.totalEvents,
       ));

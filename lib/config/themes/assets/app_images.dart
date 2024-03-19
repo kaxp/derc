@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 mixin AppImages {
   static const String _IMAGES_FOLDER_PATH = 'assets/images/';
-
   static const String _icBlog = _IMAGES_FOLDER_PATH + 'il_activity_blog.svg';
   static const String _icSomethingWentWrong =
       _IMAGES_FOLDER_PATH + 'il_activity_something_wrong.svg';
@@ -13,7 +12,6 @@ mixin AppImages {
   static const String _icDataNotFound =
       _IMAGES_FOLDER_PATH + 'il_pfa_activity_data_bank_not_found.svg';
   static const String _icRocket = _IMAGES_FOLDER_PATH + 'il_rocket_point.svg';
-
   static const _appLogo = _IMAGES_FOLDER_PATH + 'logo.png';
   static const _errorPlaceholder = _IMAGES_FOLDER_PATH + 'error.png';
 
