@@ -55,8 +55,8 @@ class SearchResultListView extends StatelessWidget {
       },
       separatorBuilder: (context, index) {
         return Container(
-          height: 0.5,
-          color: AppColors.primaryColor,
+          height: 1,
+          color: AppColors.disabledColor,
         );
       },
     );

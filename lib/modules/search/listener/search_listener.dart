@@ -12,7 +12,7 @@ import 'package:kapil_sahu_cred/modules/search/widgets/search_buy_ticket_widget.
 import 'package:kapil_sahu_cred/modules/search/widgets/search_result_loaded_widget.dart';
 
 class SearchListener {
-  void listen({
+  static void listen({
     required BuildContext context,
     required SearchState state,
     required VoidCallback onStackDismissed,
@@ -20,7 +20,7 @@ class SearchListener {
     required String searchQuery,
   }) {
     if (state is SearchLoading) {
-      bloc.stackView[bloc.currentStackIndex] = StackViewModel(
+      bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
         primaryChild: const CircularProgressIndicator(),
         secondaryChild: Header3(
           title: AppStrings.awaitingJoy,
@@ -30,7 +30,7 @@ class SearchListener {
         onButtonTap: () => () {},
       );
     } else if (state is SearchResultLoaded) {
-      bloc.stackView[bloc.currentStackIndex] = StackViewModel(
+      bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
         primaryChild: SearchResultLoadedWidget(
           state: state,
           onTap: (event) {
@@ -52,7 +52,7 @@ class SearchListener {
         },
       );
     } else if (state is SearchResultEmpty) {
-      bloc.stackView[bloc.currentStackIndex] = StackViewModel(
+      bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
         primaryChild: const EmptyStateView(),
         secondaryChild: Header3(
           title: AppStrings.couldNotLocateEvent,
@@ -65,7 +65,7 @@ class SearchListener {
         },
       );
     } else if (state is SearchResultError) {
-      bloc.stackView[bloc.currentStackIndex] = StackViewModel(
+      bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
         primaryChild: const ErrorStateView(),
         secondaryChild: Header3(
           title: AppStrings.noResultFound,
@@ -78,7 +78,7 @@ class SearchListener {
         },
       );
     } else if (state is SearchBuyEventTicket) {
-      bloc.stackView[bloc.currentStackIndex] = StackViewModel(
+      bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
         primaryChild: const SearchBuyTicketWidget(),
         secondaryChild: const SizedBox.shrink(),
         buttonTitle: AppStrings.buyTicket,

@@ -11,6 +11,6 @@ void main() async {
         clientId: NetworkConstants.mockServerClientId,
       ),
     ),
-    dumpErrorToConsole: false,
+    dumpErrorToConsole: true,
   );
 }

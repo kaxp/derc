@@ -13,8 +13,7 @@ import 'package:kapil_sahu_cred/modules/search/widgets/search_event_detail_widge
 import 'package:kapil_sahu_cred/modules/search/widgets/search_initial_widget.dart';
 
 class SearchPage {
-  final _searchBloc = Modular.get<SearchBloc>();
-  final TextEditingController _searchInputController = TextEditingController();
+  final SearchBloc _searchBloc = Modular.get<SearchBloc>();
 
   void showSearchView({
     required BuildContext context,
@@ -30,17 +29,17 @@ class SearchPage {
       enableDrag: false,
       useRootNavigator: false,
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparentColor,
       context: context,
       builder: (ctx) {
         return BlocConsumer<SearchBloc, SearchState>(
           bloc: _searchBloc,
-          listener: (context, state) => SearchListener().listen(
+          listener: (context, state) => SearchListener.listen(
             context: context,
             state: state,
             onStackDismissed: onStackDismissed,
             bloc: _searchBloc,
-            searchQuery: _searchInputController.text,
+            searchQuery: _searchBloc.searchInputController.text,
           ),
           builder: (context, state) {
             _populateStackView(context, state);
@@ -56,7 +55,7 @@ class SearchPage {
                     Modular.to.pop();
                     onStackDismissed();
                   },
-                  stackItems: _searchBloc.stackView,
+                  stackItems: _searchBloc.stackViewItems,
                   onStackChange: (stackIndex) {
                     _searchBloc.currentStackIndex = stackIndex;
                     _searchBloc.onStackChange(stackIndex, totalStackCount);
@@ -70,11 +69,22 @@ class SearchPage {
     );
   }
 
+  /// [_populateStackView] is responsible for populating the data for
+  /// stackView based on where the Search bottomSheet is opened from.
+  ///
+  /// When bottomSheet is open from Search Button on HomePage, the state
+  /// of SearchPage will be [SearchInitial].
+  ///
+  /// When bottomSheet is open from clicking Event item on HomePage, the state
+  /// of SearchPage will be [SearchShowEventDetail].
   void _populateStackView(BuildContext context, SearchState state) {
     if (state is SearchInitial) {
-      _searchBloc.stackView[_searchBloc.currentStackIndex] = StackViewModel(
+      // Init view with search bar
+      _searchBloc.stackViewItems[_searchBloc.currentStackIndex] =
+          StackViewModel(
         primaryChild: SearchInitialWidget(
-          textEditingController: _searchInputController,
+          textEditingController: _searchBloc.searchInputController,
+          focusNode: _searchBloc.focusNode,
           onSearch: (query) {
             if (query.trim().isNotEmpty) {
               _searchBloc.currentStackIndex += 1;
@@ -88,14 +98,15 @@ class SearchPage {
         ),
         buttonTitle: AppStrings.search,
         onButtonTap: () {
-          if (_searchInputController.text.trim().isNotEmpty) {
+          if (_searchBloc.searchInputController.text.trim().isNotEmpty) {
             _searchBloc.currentStackIndex += 1;
-            _searchBloc.searchEvents(_searchInputController.text);
+            _searchBloc.searchEvents(_searchBloc.searchInputController.text);
           }
         },
       );
     } else if (state is SearchShowEventDetail) {
-      _searchBloc.stackView[_searchBloc.currentStackIndex] = StackViewModel(
+      _searchBloc.stackViewItems[_searchBloc.currentStackIndex] =
+          StackViewModel(
         primaryChild: SearchShowEventDetailWidget(state: state),
         secondaryChild: Header3(
           title: AppStrings.uncloverDetails,

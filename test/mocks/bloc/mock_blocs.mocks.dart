@@ -207,8 +207,8 @@ class MockSearchBloc extends _i1.Mock implements _i3.SearchBloc {
       );
 
   @override
-  Map<int, _i7.StackViewModel> get stackView => (super.noSuchMethod(
-        Invocation.getter(#stackView),
+  Map<int, _i7.StackViewModel> get stackViewItems => (super.noSuchMethod(
+        Invocation.getter(#stackViewItems),
         returnValue: <int, _i7.StackViewModel>{},
         returnValueForMissingStub: <int, _i7.StackViewModel>{},
       ) as Map<int, _i7.StackViewModel>);

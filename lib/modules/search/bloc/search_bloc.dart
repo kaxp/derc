@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:kapil_sahu_cred/modules/home/models/events_response.dart';
@@ -12,10 +13,20 @@ class SearchBloc extends Cubit<SearchState> {
   SearchBloc() : super(SearchInitial());
 
   final HomeRepo _homeRepo = Modular.get<HomeRepo>();
-
+  final TextEditingController searchInputController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
   int currentStackIndex = 0;
+
+  /// [selectedEvent] will hold the value of single Event data
+  /// selected by the user.
   Event? selectedEvent;
-  final Map<int, StackViewModel> stackView = {};
+
+  /// [stackViewItems] will hold the UI elements of all
+  /// stack views.
+  ///
+  /// Here key pair are the stack number and value pair
+  /// are UI components
+  final Map<int, StackViewModel> stackViewItems = {};
 
   /// Search for events based on query.
   ///
@@ -124,6 +135,14 @@ class SearchBloc extends Cubit<SearchState> {
       ));
     } else {
       emit(SearchInitial());
+      focusNode.requestFocus();
     }
+  }
+
+  @override
+  Future<void> close() {
+    focusNode.dispose();
+    searchInputController.dispose();
+    return super.close();
   }
 }

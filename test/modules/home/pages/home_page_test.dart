@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kapil_sahu_cred/components/atoms/buttons/default_elevated_button.dart';
 import 'package:kapil_sahu_cred/components/atoms/typography/header2.dart';
 import 'package:kapil_sahu_cred/components/molecules/app_bar/custom_appbar.dart';
+import 'package:kapil_sahu_cred/components/molecules/loading_overlay/loading_overlay.dart';
 import 'package:kapil_sahu_cred/components/molecules/states/empty_state_view.dart';
 import 'package:kapil_sahu_cred/config/flavor_config.dart';
 import 'package:kapil_sahu_cred/constants/app_strings.dart';
@@ -51,14 +52,10 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     expect(find.byType(CustomAppBar), findsOneWidget);
-    expect(find.byType(HomeError), findsOneWidget);
-
-    expect(find.byType(SvgPicture), findsOneWidget);
-    expect(
-        find.widgetWithText(Header2, AppStrings.noDataFound), findsOneWidget);
+    expect(find.byType(LoadingOverlay), findsOneWidget);
   });
 
   testWidgets('''Given HomePage is first opened

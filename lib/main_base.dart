@@ -28,8 +28,6 @@ void runMain({
       ),
     );
   }, (error, stack) {
-    // Record errors to analytics here, like FirebaseCrashlytics etc.
-
     final details = FlutterErrorDetails(exception: error, stack: stack);
     if (dumpErrorToConsole) {
       FlutterError.dumpErrorToConsole(details);

@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
           boxShadow: <BoxShadow>[
             BoxShadow(
               color: AppColors.primaryColor,
-              blurRadius: 10,
+              blurRadius: 20,
               offset: Offset(0.0, 10.0),
             )
           ],

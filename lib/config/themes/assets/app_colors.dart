@@ -10,4 +10,8 @@ mixin AppColors {
   static const Color lightGreyColor = Color(0xff969696);
   static const Color offWhiteColor = Color(0x8AFFFFFF);
   static const Color transparentColor = Colors.transparent;
+  static const Color stackViewColour1 = Color(0xff2E3139);
+  static const Color stackViewColour2 = Color(0xff323641);
+  static const Color stackViewColour3 = Color(0xff383D4C);
+  static const Color stackViewColour4 = Color(0xff40465A);
 }

@@ -20,6 +20,7 @@ class CustomSearchInputBox extends StatefulWidget {
     this.autovalidateMode,
     this.fillColor,
     this.filled,
+    this.focusNode,
   });
 
   final TextInputType textInputType;
@@ -35,6 +36,7 @@ class CustomSearchInputBox extends StatefulWidget {
   final AutovalidateMode? autovalidateMode;
   final Color? fillColor;
   final bool? filled;
+  final FocusNode? focusNode;
 
   @override
   State<CustomSearchInputBox> createState() => _CustomSearchInputBoxState();
@@ -85,7 +87,11 @@ class _CustomSearchInputBoxState extends State<CustomSearchInputBox> {
         suffixIconColor: AppColors.white,
       ),
       onSubmitted: widget.onSubmitted,
+      focusNode: widget.focusNode,
       enabled: true,
+      onTapOutside: (_) {
+        widget.focusNode!.unfocus();
+      },
     );
   }
 

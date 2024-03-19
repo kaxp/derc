@@ -1,5 +1,7 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:kapil_sahu_cred/config/themes/assets/app_colors.dart';
+import 'package:kapil_sahu_cred/constants/radius_constants.dart';
 
 import '../../../components/atoms/typography/header2.dart';
 
@@ -23,8 +25,13 @@ class DefaultElevatedButton extends StatelessWidget
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor ?? AppColors.redColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+          shape: const SmoothRectangleBorder(
+            borderRadius: SmoothBorderRadius.all(
+              SmoothRadius(
+                cornerRadius: kRadiusSmall,
+                cornerSmoothing: 1,
+              ),
+            ),
           ),
         ),
         onPressed: onPressed,

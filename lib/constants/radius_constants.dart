@@ -8,6 +8,7 @@ const kRadiusXxSmall = 4.0;
 const kRadiusXSmall = 8.0;
 const kRadiusSmall = 12.0;
 const kRadiusMedium = 16.0;
+const kRadiusLarge = 24.0;
 
 /// Used for full rounded corners
-const kRadiusLarge = 999.0;
+const kRadiusXLarge = 999.0;

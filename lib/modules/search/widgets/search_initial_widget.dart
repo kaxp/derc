@@ -11,10 +11,12 @@ class SearchInitialWidget extends StatelessWidget {
     super.key,
     required this.textEditingController,
     required this.onSearch,
+    required this.focusNode,
   });
 
   final TextEditingController textEditingController;
   final Function(String) onSearch;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class SearchInitialWidget extends StatelessWidget {
             onSubmitted: onSearch,
             controller: textEditingController,
             showSuffixIcon: true,
+            focusNode: focusNode,
           ),
         ],
       ),

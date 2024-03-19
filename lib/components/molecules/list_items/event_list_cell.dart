@@ -28,10 +28,9 @@ class EventListCell extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.all(
-            Radius.circular(kRadiusXSmall),
+            Radius.circular(kRadiusSmall),
           ),
           child: Container(
-            color: AppColors.blackColor,
             child: CachedNetworkImage(
               height: 54,
               width: 54,

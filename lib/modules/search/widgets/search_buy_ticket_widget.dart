@@ -14,17 +14,19 @@ class SearchBuyTicketWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kSpacingSmall),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(child: AppImages.icSuccess()),
           Header6(
             title: AppStrings.timeToMakeItYours,
             color: AppColors.redColor,
+            textAlign: TextAlign.center,
             fontSize: 20,
           ),
           Header5(
             title: AppStrings.youAreStanding,
             color: AppColors.white,
+            textAlign: TextAlign.center,
             fontSize: 14,
           ),
         ],
