@@ -17,7 +17,6 @@ class SearchListener {
     required SearchState state,
     required VoidCallback onStackDismissed,
     required SearchBloc bloc,
-    required String searchQuery,
   }) {
     if (state is SearchLoading) {
       bloc.stackViewItems[bloc.currentStackIndex] = StackViewModel(
@@ -74,7 +73,7 @@ class SearchListener {
         buttonTitle: AppStrings.retry,
         onButtonTap: () {
           bloc.currentStackIndex -= 1;
-          bloc.searchEvents(searchQuery);
+          bloc.searchEvents(bloc.searchInputController.text);
         },
       );
     } else if (state is SearchBuyEventTicket) {

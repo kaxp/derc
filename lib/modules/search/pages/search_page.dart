@@ -39,7 +39,6 @@ class SearchPage {
             state: state,
             onStackDismissed: onStackDismissed,
             bloc: _searchBloc,
-            searchQuery: _searchBloc.searchInputController.text,
           ),
           builder: (context, state) {
             _populateStackView(context, state);
