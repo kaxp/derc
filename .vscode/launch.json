@@ -5,10 +5,10 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Development",
+      "name": "Staging",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main_development.dart"
+      "program": "lib/main_staging.dart"
     },
     {
       "name": "Production",
