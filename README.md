@@ -31,7 +31,8 @@ This application is developed on Flutter v3.16.3 in the Stable channel.
   |   |   ├── listener/
   |   |   ├── models/
   |   |   ├── pages/
-  |   |   └── widgets/
+  |   |   ├── widgets/
+  |   |   └── search_module.dart
   |-- networking
   |   ├── constants/
   |   ├── interceptors/
@@ -84,7 +85,7 @@ This application is developed on Flutter v3.16.3 in the Stable channel.
 
 ### Steps for running the application-
 
-1. Open the project folder `kapil_sahu_cred` in choice of code editor
+1. Open the project folder `derc` in choice of code editor
 2. run `flutter pub get`
 3. run `flutter pub run build_runner build`
 4. run the application on android device
