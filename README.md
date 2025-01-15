@@ -12,7 +12,6 @@ https://github.com/kaxp/derc/assets/25891817/8fb65546-83f3-497c-954b-606a9077e2a
 2. Clicking on any collapsed view toggles its state i.e. it expands and the other expanded view collapses.
     > For example, If 4 stacks are expanded and the user taps stack number 2 then stack 2 comes into view and stacks 3 and 4 gets collapsed.
 4. Framework can have a maximum of 4 stacks and a minimum of 2 stacks.
-5. Any assumptions made should be called out explicitly.
 
 
 # Project tree
@@ -107,14 +106,6 @@ https://github.com/kaxp/derc/assets/25891817/8fb65546-83f3-497c-954b-606a9077e2a
 3. run `flutter pub run build_runner build`
 4. run the application on Android device
    - `flutter run --release`
-
-### Assumptions
-
-1. Some Intended behaviours in the app
-   - The system back navigation on StackManager is disabled.
-   - No auto search (debounce)
-   - In StackManager while searching the events, we are only fetching Page 1 data now.
-   - Once an expanded stack is collapsed, its state will be lost i.e. If we move from the 3rd stack to the 1st then the state of the 2nd and 3rd stack will be lost.
 
 
 ### Screenshots
